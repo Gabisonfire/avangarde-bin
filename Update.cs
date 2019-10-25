@@ -165,7 +165,7 @@ namespace Avantgarde.Bin
         void UpdateVersion()
         {
             SettingsFile.CurrentVersion = Manifest.TargetVersion;
-            Settings.Save(SettingsFile);
+            Settings.Save(SettingsFile, SettingsFile.OriginalAppPath + Settings.SETTINGS_FILENAME);
         }
     }
 }
