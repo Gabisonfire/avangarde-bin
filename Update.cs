@@ -64,7 +64,7 @@ namespace Avantgarde.Bin
                         gotMaster = true;
                         if (f.Source.StartsWith("http"))
                         {
-                            dm.DownloadRemoteFile(f.Source, SettingsFile.TempDir + Path.GetFileName(f.Destination));
+                            dm.DownloadRemoteFile(f.Source, Path.Combine(SettingsFile.TempDir, Path.GetFileName(f.Destination)));
                             Utils.Log("Decompressing master archive...");
                             ZipFile.ExtractToDirectory(SettingsFile.TempDir + Path.GetFileName(f.Destination), SettingsFile.TempDir);
                         }                                
@@ -84,7 +84,7 @@ namespace Avantgarde.Bin
                 if (f.Source.StartsWith("http"))
                 {
                     if (f.Tags.Contains("master")) { continue; } // Skip the master file
-                    dm.DownloadRemoteFile(f.Source, SettingsFile.TempDir + Path.GetFileName(f.Destination));
+                    dm.DownloadRemoteFile(f.Source, Path.Combine(SettingsFile.TempDir, Path.GetFileName(f.Destination)));
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace Avantgarde.Bin
                 // If the path is not tagged static, we append the original app path to ensure relative path structure.
                 if (!f.Tags.Contains("static"))
                 {
-                    f.Destination = SettingsFile.OriginalAppPath + f.Destination;
+                    f.Destination = Path.Combine(SettingsFile.OriginalAppPath, f.Destination);
                 }
 
                 // Creating target directories is the default behaviour
@@ -124,7 +124,7 @@ namespace Avantgarde.Bin
                 }
                 else if(f.Source.StartsWith("http")) // Path is remote
                 {
-                    File.Copy(SettingsFile.TempDir + Path.GetFileName(f.Source), f.Destination, true);
+                    File.Copy(Path.Combine(SettingsFile.TempDir, Path.GetFileName(f.Source)), f.Destination, true);
                     Utils.Log($"Updated {f.Destination}");
                 }
                 else // Source path is static
@@ -165,7 +165,7 @@ namespace Avantgarde.Bin
         void UpdateVersion()
         {
             SettingsFile.CurrentVersion = Manifest.TargetVersion;
-            Settings.Save(SettingsFile, SettingsFile.OriginalAppPath + Settings.SETTINGS_FILENAME);
+            Settings.Save(SettingsFile, Path.Combine(SettingsFile.OriginalAppPath, Settings.SETTINGS_FILENAME));
         }
     }
 }
